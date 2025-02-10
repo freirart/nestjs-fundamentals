@@ -16,7 +16,7 @@ export class CharactersService {
     return this.characters;
   }
 
-  findOne(id: string): Character | never {
+  findOne(id: number): Character | never {
     const character = this.characters.find((character) => character.id === +id);
 
     if (character) {
@@ -26,12 +26,12 @@ export class CharactersService {
     throw new NotFoundException(`Unable to find character with id: ${id}`);
   }
 
-  create(createCharacterDto: Character): Character {
+  create(createCharacterDto): Character {
     this.characters.push(createCharacterDto);
     return createCharacterDto;
   }
 
-  update(id: string, updateCharacterDto: Character): Character | never {
+  update(id: number, updateCharacterDto): Character | never {
     const existingCharacter = this.findOne(id);
 
     if (existingCharacter) {
@@ -43,7 +43,7 @@ export class CharactersService {
     throw new NotFoundException(`Unable to update character with id: ${id}`);
   }
 
-  remove(id: string): Character | never {
+  remove(id: number): Character | never {
     const existingCharacter = this.findOne(id);
 
     if (existingCharacter) {
