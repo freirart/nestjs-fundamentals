@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { VisitedRegion } from './visited-region.entity';
 
 @Entity()
 export class Character {
@@ -11,6 +18,9 @@ export class Character {
   @Column()
   nickname: string;
 
-  @Column('json', { nullable: true })
-  visitedRegions: string[];
+  @JoinTable()
+  @ManyToMany((_type) => VisitedRegion, (region) => region.visitors, {
+    cascade: true,
+  })
+  visitedRegions: VisitedRegion[];
 }
