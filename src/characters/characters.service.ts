@@ -1,23 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateCharacterDto } from './dto/create-character.dto';
+import { UpdateCharacterDto } from './dto/update-character.dto';
 import { Character } from './entities/characters.entity';
 
 @Injectable()
 export class CharactersService {
-  private characters: Character[] = [
-    {
-      id: 1,
-      name: 'Kassandra',
-      nickname: 'Eagle Bearer',
-      visitedRegions: ['Kephallonia', 'Phokis', 'Attika'],
-    },
-  ];
+  constructor(
+    @InjectRepository(Character)
+    private readonly characterRepository: Repository<Character>,
+  ) {}
 
-  findAll(): Character[] {
-    return this.characters;
+  findAll() {
+    return this.characterRepository.find();
   }
 
-  findOne(id: number): Character | never {
-    const character = this.characters.find((character) => character.id === +id);
+  async findOne(id: number): Promise<Character> | never {
+    const character = await this.characterRepository.findOne({
+      where: { id: id },
+    });
 
     if (character) {
       return character;
@@ -26,33 +28,29 @@ export class CharactersService {
     throw new NotFoundException(`Unable to find character with id: ${id}`);
   }
 
-  create(createCharacterDto): Character {
-    this.characters.push(createCharacterDto);
-    return createCharacterDto;
+  create(createCharacterDto: CreateCharacterDto) {
+    const newCharacter = this.characterRepository.create(createCharacterDto);
+    return this.characterRepository.save(newCharacter);
   }
 
-  update(id: number, updateCharacterDto): Character | never {
-    const existingCharacter = this.findOne(id);
+  async update(
+    id: number,
+    updateCharacterDto: UpdateCharacterDto,
+  ): Promise<Character> | never {
+    const existingCharacter = await this.characterRepository.preload({
+      id,
+      ...updateCharacterDto,
+    });
 
     if (existingCharacter) {
-      const characterIndex = this.characters.indexOf(existingCharacter);
-      this.characters[characterIndex] = updateCharacterDto;
-      return updateCharacterDto;
+      return this.characterRepository.save(existingCharacter);
     }
 
     throw new NotFoundException(`Unable to update character with id: ${id}`);
   }
 
-  remove(id: number): Character | never {
-    const existingCharacter = this.findOne(id);
-
-    if (existingCharacter) {
-      this.characters = this.characters.filter(
-        (character) => character.id !== +id,
-      );
-      return existingCharacter;
-    }
-
-    throw new NotFoundException(`Unable to remove character with id: ${id}`);
+  async remove(id: number): Promise<Character> | never {
+    const existingCharacter = await this.findOne(id);
+    return this.characterRepository.remove(existingCharacter);
   }
 }
