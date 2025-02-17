@@ -18,6 +18,9 @@ export class Character {
   @Column()
   nickname: string;
 
+  @Column({ default: 0 })
+  shipCrewHeadCount: number;
+
   @JoinTable()
   @ManyToMany((_type) => VisitedRegion, (region) => region.visitors, {
     cascade: true,
