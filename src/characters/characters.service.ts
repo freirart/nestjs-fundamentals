@@ -115,4 +115,18 @@ export class CharactersService {
       await manager.save(captain);
     });
   }
+
+  async recruit(captain: Character) {
+    await this.dataSource.transaction(async (manager) => {
+      captain.shipCrewHeadCount++;
+
+      const recruitment = new Recruitment();
+      recruitment.name = `Fulano #${captain.shipCrewHeadCount}`;
+      recruitment.type = 'Legendary';
+      recruitment.payload = { captainId: captain.id };
+
+      await manager.save(recruitment);
+      await manager.save(captain);
+    });
+  }
 }
