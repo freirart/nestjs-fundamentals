@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCharacterDto } from './dto/create-character.dto';
+import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { Character } from './entities/characters.entity';
 import { VisitedRegion } from './entities/visited-region.entity';
@@ -15,11 +16,15 @@ export class CharactersService {
     private readonly visitedRegionRepository: Repository<VisitedRegion>,
   ) {}
 
-  findAll() {
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit: take, offset: skip } = paginationQuery;
+
     return this.characterRepository.find({
       relations: {
         visitedRegions: true,
       },
+      take,
+      skip,
     });
   }
 

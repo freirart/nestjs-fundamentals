@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { CharactersService } from './characters.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
+import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 
 @Controller('characters')
@@ -17,9 +18,8 @@ export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
   @Get()
-  findAll(@Query() paginationQuery) {
-    // const { limit, offset } = paginationQuery;
-    return this.charactersService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.charactersService.findAll(paginationQuery);
   }
 
   @Get(':id')
