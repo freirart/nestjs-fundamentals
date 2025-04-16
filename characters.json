@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Alexios of Sparta",
+    "nickname": "Deimos",
+    "visitedRegions": ["Attika", "Kephallonia", "Lakonia", "Makedonia"]
+  },
+  {
+    "name": "Aspasia",
+    "nickname": "The Leader",
+    "visitedRegions": ["Attika", "Delos", "Korinthia", "Mykonos"]
+  },
+  {
+    "name": "Barnabas",
+    "nickname": "The Captain",
+    "visitedRegions": ["Attika", "Kephallonia", "Naxos", "Paros"]
+  },
+  {
+    "name": "Brasidas",
+    "nickname": "The Warrior",
+    "visitedRegions": ["Korinthia", "Lakonia", "Megaris", "Messenia"]
+  },
+  {
+    "name": "Herodotos",
+    "nickname": "The Historian",
+    "visitedRegions": ["Attika", "Boeotia", "Messenia", "Samos"]
+  },
+  {
+    "name": "Kassandra of Sparta",
+    "nickname": "The Eagle Bearer",
+    "visitedRegions": ["Attika", "Kephallonia", "Korinthia", "Megaris"]
+  },
+  {
+    "name": "Leonidas",
+    "nickname": "The King",
+    "visitedRegions": ["Attika", "Lakonia", "Makedonia", "Thermopylae"]
+  },
+  {
+    "name": "Perikles",
+    "nickname": "The Strategist",
+    "visitedRegions": ["Argolis", "Attika", "Boeotia", "Euboea"]
+  },
+  {
+    "name": "Phoibe",
+    "nickname": "The Little Eagle",
+    "visitedRegions": ["Argolis", "Attika", "Kephallonia", "Korinthia"]
+  },
+  {
+    "name": "Sokrates",
+    "nickname": "The Philosopher",
+    "visitedRegions": ["Attika", "Boeotia", "Korinthia", "Lakonia"]
+  }
+]
