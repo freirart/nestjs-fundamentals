@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Character } from './characters.entity';
 
 @Entity()
-export class VisitedRegion {
+export class Region {
   @PrimaryGeneratedColumn()
   id: number;
 

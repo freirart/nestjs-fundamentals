@@ -6,15 +6,15 @@ import { CreateCharacterDto } from './dto/create-character.dto';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { Character } from './entities/characters.entity';
-import { VisitedRegion } from './entities/visited-region.entity';
+import { Region } from './entities/region.entity';
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectRepository(Character)
     private readonly characterRepository: Repository<Character>,
-    @InjectRepository(VisitedRegion)
-    private readonly visitedRegionRepository: Repository<VisitedRegion>,
+    @InjectRepository(Region)
+    private readonly regionRepository: Repository<Region>,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -90,10 +90,8 @@ export class CharactersService {
     return this.characterRepository.remove(existingCharacter);
   }
 
-  private async preloadVisitedRegionByName(
-    name: string,
-  ): Promise<VisitedRegion> {
-    const existingVisitedRegion = await this.visitedRegionRepository.findOne({
+  private async preloadVisitedRegionByName(name: string): Promise<Region> {
+    const existingVisitedRegion = await this.regionRepository.findOne({
       where: { name },
     });
 
@@ -101,7 +99,7 @@ export class CharactersService {
       return existingVisitedRegion;
     }
 
-    return this.visitedRegionRepository.create({ name });
+    return this.regionRepository.create({ name });
   }
 
   async recruit(captain: Character) {

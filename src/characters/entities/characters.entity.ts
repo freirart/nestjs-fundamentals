@@ -5,7 +5,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { VisitedRegion } from './visited-region.entity';
+import { Region } from './region.entity';
 
 @Entity()
 export class Character {
@@ -22,8 +22,8 @@ export class Character {
   shipCrewHeadCount: number;
 
   @JoinTable()
-  @ManyToMany((_type) => VisitedRegion, (region) => region.visitors, {
+  @ManyToMany((_type) => Region, (region) => region.visitors, {
     cascade: true,
   })
-  visitedRegions: VisitedRegion[];
+  visitedRegions: Region[];
 }
