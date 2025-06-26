@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CharactersModule } from './characters/characters.module';
+import { CommonModule } from './common/common.module';
 import databaseConfig, { validationSchema } from './database/database.config';
 import { DatabaseModule } from './database/database.module';
 import { DatabaseService } from './database/database.service';
@@ -15,6 +16,7 @@ import { DatabaseService } from './database/database.service';
       validationSchema,
     }),
     DatabaseModule,
+    CommonModule,
     CharactersModule,
     TypeOrmModule.forRootAsync({
       useClass: DatabaseService,
