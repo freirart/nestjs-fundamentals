@@ -1,21 +1,24 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CharactersModule } from './characters/characters.module';
+import databaseConfig, { validationSchema } from './database/database.config';
+import { DatabaseModule } from './database/database.module';
+import { DatabaseService } from './database/database.service';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env.dev',
+      validationSchema,
+    }),
+    DatabaseModule,
     CharactersModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres', // type of our database
-      host: 'localhost', // database host
-      port: 5432, // database host
-      username: 'postgres', // username
-      password: 'pass123', // user password
-      database: 'postgres', // name of our database,
-      autoLoadEntities: true, // models will be loaded automatically
-      synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
+    TypeOrmModule.forRootAsync({
+      useClass: DatabaseService,
+      imports: [ConfigModule.forFeature(databaseConfig)],
     }),
   ],
   controllers: [AppController],
