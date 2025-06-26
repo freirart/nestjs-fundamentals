@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ApiKeyGuard } from './api-key/api-key.guard';
+import { HttpExceptionFilter } from './filters/http-exception/http-exception.filter';
 import { TimeoutInterceptor } from './timeout/timeout.interceptor';
 import { WrapResponseInterceptor } from './wrap-response/wrap-response.interceptor';
 
@@ -19,6 +20,10 @@ import { WrapResponseInterceptor } from './wrap-response/wrap-response.intercept
     {
       provide: APP_INTERCEPTOR,
       useClass: TimeoutInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
     },
   ],
 })
