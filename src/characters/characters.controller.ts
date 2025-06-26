@@ -8,6 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ParseIntPipe } from '../common/pipes/parse-int/parse-int.pipe';
 import { CharactersService } from './characters.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
@@ -23,7 +24,7 @@ export class CharactersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.charactersService.findOne(id);
   }
 
