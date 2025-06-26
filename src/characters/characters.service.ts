@@ -1,23 +1,42 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Recruitment } from 'src/recruitment/entities/recruitment.entity';
+import { DataSource, Repository } from 'typeorm';
+import { CreateCharacterDto } from './dto/create-character.dto';
+import { PaginationQueryDto } from './dto/pagination-query.dto';
+import { UpdateCharacterDto } from './dto/update-character.dto';
 import { Character } from './entities/characters.entity';
+import { Region } from './entities/region.entity';
 
 @Injectable()
 export class CharactersService {
-  private characters: Character[] = [
-    {
-      id: 1,
-      name: 'Kassandra',
-      nickname: 'Eagle Bearer',
-      visitedRegions: ['Kephallonia', 'Phokis', 'Attika'],
-    },
-  ];
+  constructor(
+    @InjectRepository(Character)
+    private readonly characterRepository: Repository<Character>,
+    @InjectRepository(Region)
+    private readonly regionRepository: Repository<Region>,
+    private readonly dataSource: DataSource,
+  ) {}
 
-  findAll(): Character[] {
-    return this.characters;
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit: take, offset: skip } = paginationQuery;
+
+    return this.characterRepository.find({
+      relations: {
+        visitedRegions: true,
+      },
+      take,
+      skip,
+    });
   }
 
-  findOne(id: string): Character | never {
-    const character = this.characters.find((character) => character.id === +id);
+  async findOne(id: number): Promise<Character> | never {
+    const character = await this.characterRepository.findOne({
+      where: { id },
+      relations: {
+        visitedRegions: true,
+      },
+    });
 
     if (character) {
       return character;
@@ -26,33 +45,74 @@ export class CharactersService {
     throw new NotFoundException(`Unable to find character with id: ${id}`);
   }
 
-  create(createCharacterDto: Character): Character {
-    this.characters.push(createCharacterDto);
-    return createCharacterDto;
+  async create(createCharacterDto: CreateCharacterDto) {
+    const visitedRegions = await Promise.all(
+      createCharacterDto.visitedRegions.map((name) =>
+        this.preloadVisitedRegionByName(name),
+      ),
+    );
+
+    const newCharacter = this.characterRepository.create({
+      ...createCharacterDto,
+      visitedRegions,
+    });
+
+    return this.characterRepository.save(newCharacter);
   }
 
-  update(id: string, updateCharacterDto: Character): Character | never {
-    const existingCharacter = this.findOne(id);
+  async update(
+    id: number,
+    updateCharacterDto: UpdateCharacterDto,
+  ): Promise<Character> | never {
+    const visitedRegions =
+      updateCharacterDto.visitedRegions &&
+      (await Promise.all(
+        updateCharacterDto.visitedRegions.map((name) =>
+          this.preloadVisitedRegionByName(name),
+        ),
+      ));
+
+    const existingCharacter = await this.characterRepository.preload({
+      id,
+      ...updateCharacterDto,
+      visitedRegions,
+    });
 
     if (existingCharacter) {
-      const characterIndex = this.characters.indexOf(existingCharacter);
-      this.characters[characterIndex] = updateCharacterDto;
-      return updateCharacterDto;
+      return this.characterRepository.save(existingCharacter);
     }
 
     throw new NotFoundException(`Unable to update character with id: ${id}`);
   }
 
-  remove(id: string): Character | never {
-    const existingCharacter = this.findOne(id);
+  async remove(id: number): Promise<Character> | never {
+    const existingCharacter = await this.findOne(id);
+    return this.characterRepository.remove(existingCharacter);
+  }
 
-    if (existingCharacter) {
-      this.characters = this.characters.filter(
-        (character) => character.id !== +id,
-      );
-      return existingCharacter;
+  private async preloadVisitedRegionByName(name: string): Promise<Region> {
+    const existingVisitedRegion = await this.regionRepository.findOne({
+      where: { name },
+    });
+
+    if (existingVisitedRegion) {
+      return existingVisitedRegion;
     }
 
-    throw new NotFoundException(`Unable to remove character with id: ${id}`);
+    return this.regionRepository.create({ name });
+  }
+
+  async recruit(captain: Character) {
+    await this.dataSource.transaction(async (manager) => {
+      captain.shipCrewHeadCount++;
+
+      const recruitment = new Recruitment();
+      recruitment.name = `Fulano #${captain.shipCrewHeadCount}`;
+      recruitment.type = 'Legendary';
+      recruitment.payload = { captainId: captain.id };
+
+      await manager.save(recruitment);
+      await manager.save(captain);
+    });
   }
 }
