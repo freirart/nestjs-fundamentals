@@ -12,4 +12,4 @@ COPY . ./
 RUN npm ci
 
 # Serve the app
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "./dist/main.js"]
