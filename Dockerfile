@@ -1,6 +1,6 @@
 # Use the Node official image
 # https://hub.docker.com/_/node
-FROM node:lts
+FROM node:20-slim
 
 # Create and change to the app directory.
 WORKDIR /app
@@ -12,4 +12,4 @@ COPY . ./
 RUN npm ci
 
 # Serve the app
-CMD ["node", "./dist/main.js"]
+CMD ["npm", "run", "start:prod"]
