@@ -101,7 +101,7 @@ describe('CRUD /characters', () => {
       });
 
       describe('caso contrário', () => {
-        it('se for um id inexistente, deve retornar 404', async () => {
+        it('se for um id inexistente, deve retornar o erro HTTP 404 Not Found', async () => {
           const { status, body } = await makeGetRequest(-1);
 
           expect(status).toBe(HttpStatus.NOT_FOUND);
@@ -110,7 +110,7 @@ describe('CRUD /characters', () => {
           });
         });
 
-        it('se for um id num formato inválido, deve retornar 400', async () => {
+        it('se for um id num formato inválido, deve retornar o erro HTTP 400 Bad Request', async () => {
           const { status, body } = await makeGetRequest('invalid-id');
 
           expect(status).toBe(HttpStatus.BAD_REQUEST);
@@ -343,7 +343,7 @@ describe('CRUD /characters', () => {
     });
 
     describe('ao informar um id inválido', () => {
-      it('deve retornar 404 se o id não existir', async () => {
+      it('deve retornar o erro HTTP 404 Not Found se o id não existir', async () => {
         const { status, body } = await makePatchRequest(-1, {
           name: 'Alexios',
         });
@@ -354,7 +354,7 @@ describe('CRUD /characters', () => {
         });
       });
 
-      it('deve retornar 400 se o id for inválido', async () => {
+      it('deve retornar o erro HTTP 400 Bad Request se o id for inválido', async () => {
         const { status, body } = await makePatchRequest('invalid-id', {
           name: 'Alexios',
         });
@@ -396,7 +396,7 @@ describe('CRUD /characters', () => {
     });
 
     describe('ao informar um id inválido', () => {
-      it('deve retornar 404 se o id não existir', async () => {
+      it('deve retornar o erro HTTP 404 Not Found se o id não existir', async () => {
         const { status, body } = await makeDeleteRequest(-1);
 
         expect(status).toBe(HttpStatus.NOT_FOUND);
@@ -405,7 +405,7 @@ describe('CRUD /characters', () => {
         });
       });
 
-      it('deve retornar 400 se o id for inválido', async () => {
+      it('deve retornar o erro HTTP 400 Bad Request se o id for inválido', async () => {
         const { status, body } = await makeDeleteRequest('invalid-id');
 
         expect(status).toBe(HttpStatus.BAD_REQUEST);
