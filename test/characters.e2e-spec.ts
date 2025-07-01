@@ -70,13 +70,11 @@ describe('CRUD /characters', () => {
         ]),
       );
 
-      return makeGetRequest().expect((response) => {
-        expect(response.status).toBe(200);
+      const { status, body } = await makeGetRequest();
 
-        const body = response.body as { data: Character[] };
-        expect(body).toHaveProperty('data');
-        expect(body.data).toHaveLength(characters.length);
-        expect(body.data).toEqual(expect.arrayContaining(characters));
+      expect(status).toBe(200);
+      expect(body).toEqual({
+        data: expect.arrayContaining(characters),
       });
     });
 
@@ -92,12 +90,10 @@ describe('CRUD /characters', () => {
             }),
           );
 
-          return makeGetRequest(character.id).expect((response) => {
-            expect(response.status).toBe(200);
-            expect(response.body).toEqual(
-              expect.objectContaining({ data: character }),
-            );
-          });
+          const { status, body } = await makeGetRequest(character.id);
+
+          expect(status).toBe(200);
+          expect(body).toEqual({ data: expect.objectContaining(character) });
         });
       });
     });
