@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
+import { Protocol } from './common/decorators/protocol.decorator';
 import { Public } from './common/decorators/public.decorator';
 
 @Controller()
@@ -20,5 +21,12 @@ export class AppController {
       ),
     );
     return this.appService.getHello();
+  }
+
+  @Public()
+  @Get('health')
+  getHealth(@Protocol() protocol: string): string {
+    console.log('Requisição recebida via:', protocol);
+    return 'OK';
   }
 }

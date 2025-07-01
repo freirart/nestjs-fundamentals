@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Recruitment } from 'src/recruitment/entities/recruitment.entity';
 import { DataSource, Repository } from 'typeorm';
+import { Recruitment } from '../recruitment/entities/recruitment.entity';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';

@@ -13,6 +13,7 @@ import { DatabaseService } from './database/database.service';
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env.dev',
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
       validationSchema,
     }),
     DatabaseModule,

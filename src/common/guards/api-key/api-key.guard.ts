@@ -1,13 +1,20 @@
-import { CanActivate, type ExecutionContext, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import {
+  CanActivate,
+  type ExecutionContext,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { type Observable } from 'rxjs';
+import guardsConfig from '../guards.config';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
   constructor(
-    private readonly configService: ConfigService,
+    @Inject(guardsConfig.KEY)
+    private configService: ConfigType<typeof guardsConfig>,
     private readonly reflector: Reflector,
   ) {}
 
@@ -23,10 +30,10 @@ export class ApiKeyGuard implements CanActivate {
       return true;
     }
 
-    const apiKey = this.configService.get<string>('API_KEY');
     const request = context.switchToHttp().getRequest<Request>();
     const authHeader = request.header('Authorization');
+    const desiredHeader = `Bearer ${this.configService.apiKey}`;
 
-    return authHeader === `Bearer ${apiKey}`;
+    return authHeader === desiredHeader;
   }
 }

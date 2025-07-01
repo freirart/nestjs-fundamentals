@@ -1,6 +1,5 @@
-version: '3'
 services:
-  db:
+  db-test:
     image: postgres
     restart: always
     ports:

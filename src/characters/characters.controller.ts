@@ -8,11 +8,14 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiTags } from '@nestjs/swagger';
+import { ParseIntPipe } from '../common/pipes/parse-int/parse-int.pipe';
 import { CharactersService } from './characters.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 
+@ApiTags('characters')
 @Controller('characters')
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
@@ -22,8 +25,11 @@ export class CharactersController {
     return this.charactersService.findAll(paginationQuery);
   }
 
+  @ApiBadRequestResponse({
+    description: 'Invalid character ID',
+  })
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.charactersService.findOne(id);
   }
 
@@ -34,14 +40,14 @@ export class CharactersController {
 
   @Patch(':id')
   update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCharacterDto: UpdateCharacterDto,
   ) {
     return this.charactersService.update(id, updateCharacterDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.charactersService.remove(id);
   }
 }
