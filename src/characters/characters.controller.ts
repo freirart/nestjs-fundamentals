@@ -40,14 +40,14 @@ export class CharactersController {
 
   @Patch(':id')
   update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCharacterDto: UpdateCharacterDto,
   ) {
     return this.charactersService.update(id, updateCharacterDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.charactersService.remove(id);
   }
 }
