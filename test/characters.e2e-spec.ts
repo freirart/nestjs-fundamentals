@@ -1,9 +1,10 @@
-import { INestApplication } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
+import { type INestApplication } from '@nestjs/common';
+import { type ConfigType } from '@nestjs/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import type { CreateCharacterDto } from 'src/characters/dto/create-character.dto';
 import * as request from 'supertest';
-import { App } from 'supertest/types';
-import { Repository } from 'typeorm';
+import type { App } from 'supertest/types';
+import type { Repository } from 'typeorm';
 import { Character } from '../src/characters/entities/characters.entity';
 import { Region } from '../src/characters/entities/region.entity';
 import guardsConfig from '../src/common/guards/guards.config';
@@ -112,6 +113,103 @@ describe('CRUD /characters', () => {
 
           expect(status).toBe(400);
           expect(body).toMatchObject({ message: 'NaN is not a valid integer' });
+        });
+      });
+    });
+  });
+
+  describe('POST /characters', () => {
+    const makePostRequest = (data: CreateCharacterDto) => {
+      return request(app.getHttpServer())
+        .post('/characters')
+        .set('Authorization', `Bearer ${apiKey}`)
+        .send(data);
+    };
+
+    it('deve conseguir criar um personagem', async () => {
+      const { status, body } = await makePostRequest({
+        name: 'Kassandra',
+        nickname: 'The Eagle Bearer',
+        visitedRegions: [],
+      });
+
+      expect(status).toBe(201);
+      expect(body).toEqual({
+        data: expect.objectContaining({
+          id: expect.any(Number),
+          name: 'Kassandra',
+          nickname: 'The Eagle Bearer',
+          visitedRegions: [],
+        }),
+      });
+    });
+
+    describe('ao informar as regiões visitadas de um personagem', () => {
+      describe('e as regiões não existirem', () => {
+        it('deve conseguir criar um personagem e as suas regiões visitadas', async () => {
+          expect(regionRepository.count()).resolves.toBe(0);
+
+          const visitedRegions = ['Korinthia', 'Lakonia'];
+          const { status, body } = await makePostRequest({
+            name: 'Kassandra',
+            nickname: 'The Eagle Bearer',
+            visitedRegions,
+          });
+
+          expect(status).toBe(201);
+          expect(body).toMatchObject({
+            data: expect.objectContaining({
+              id: expect.any(Number),
+              name: 'Kassandra',
+              nickname: 'The Eagle Bearer',
+              visitedRegions: visitedRegions.map((name) =>
+                expect.objectContaining({ name, id: expect.any(Number) }),
+              ),
+            }),
+          });
+
+          expect(regionRepository.count()).resolves.toBe(visitedRegions.length);
+          expect(regionRepository.find()).resolves.toEqual(
+            expect.arrayContaining(
+              visitedRegions.map((name) =>
+                expect.objectContaining({ id: expect.any(Number), name }),
+              ),
+            ),
+          );
+        });
+      });
+
+      describe('e as regiões já existirem', () => {
+        it('deve conseguir criar um personagem e associar as regiões visitadas existentes', async () => {
+          const visitedRegions = await saveRegions('Korinthia', 'Lakonia');
+          expect(regionRepository.count()).resolves.toBe(visitedRegions.length);
+
+          const { status, body } = await makePostRequest({
+            name: 'Kassandra',
+            nickname: 'The Eagle Bearer',
+            visitedRegions: visitedRegions.map((region) => region.name),
+          });
+
+          expect(status).toBe(201);
+          expect(body).toMatchObject({
+            data: expect.objectContaining({
+              id: expect.any(Number),
+              name: 'Kassandra',
+              nickname: 'The Eagle Bearer',
+              visitedRegions,
+            }),
+          });
+
+          expect(regionRepository.find()).resolves.toEqual(
+            expect.arrayContaining(
+              visitedRegions.map((region) =>
+                expect.objectContaining({
+                  id: expect.any(Number),
+                  name: region.name,
+                }),
+              ),
+            ),
+          );
         });
       });
     });
