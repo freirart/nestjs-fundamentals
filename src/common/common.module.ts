@@ -13,6 +13,7 @@ import { LoggingMiddleware } from './middlewares/logging/logging.middleware';
     ConfigModule.forRoot({
       envFilePath: '.env.dev',
       validationSchema,
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
       load: [guardsConfig],
     }),
   ],
