@@ -96,6 +96,24 @@ describe('CRUD /characters', () => {
           expect(body).toEqual({ data: expect.objectContaining(character) });
         });
       });
+
+      describe('caso contrário', () => {
+        it('se for um id inexistente, deve retornar 404', async () => {
+          const { status, body } = await makeGetRequest(-1);
+
+          expect(status).toBe(404);
+          expect(body).toMatchObject({
+            message: 'Unable to find character with id: -1',
+          });
+        });
+
+        it('se for um id num formato inválido, deve retornar 400', async () => {
+          const { status, body } = await makeGetRequest('invalid-id');
+
+          expect(status).toBe(400);
+          expect(body).toMatchObject({ message: 'NaN is not a valid integer' });
+        });
+      });
     });
   });
 });
