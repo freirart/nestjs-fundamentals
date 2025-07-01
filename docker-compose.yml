@@ -1,8 +1,19 @@
 services:
   db:
+    container_name: ac-odyssey-db
     image: postgres
     restart: always
     ports:
       - '5432:5432'
     environment:
       POSTGRES_PASSWORD: pass123
+
+  app:
+    depends_on:
+      - db
+    container_name: ac-odyssey-app
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: db
