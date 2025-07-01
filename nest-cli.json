@@ -5,5 +5,6 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "plugins": ["@nestjs/swagger/plugin"]
-  }
+  },
+  "entryFile": "dist/main.js"
 }
