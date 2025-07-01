@@ -58,20 +58,18 @@ describe('CRUD /characters', () => {
         'Argolis',
         'Megaris',
       );
-      const characters = await charactersRepository.save(
-        charactersRepository.create([
-          {
-            name: 'Kassandra',
-            nickname: 'The Eagle Bearer',
-            visitedRegions: visitedRegions1,
-          },
-          {
-            name: 'Nikolaos',
-            nickname: 'Wolf of Sparta',
-            visitedRegions: visitedRegions2,
-          },
-        ]),
-      );
+      const characters = await charactersRepository.save([
+        {
+          name: 'Kassandra',
+          nickname: 'The Eagle Bearer',
+          visitedRegions: visitedRegions1,
+        },
+        {
+          name: 'Nikolaos',
+          nickname: 'Wolf of Sparta',
+          visitedRegions: visitedRegions2,
+        },
+      ]);
 
       const { status, body } = await makeGetRequest();
 
@@ -85,13 +83,11 @@ describe('CRUD /characters', () => {
       describe('e for um id válido', () => {
         it('deve retornar o personagem com este id e suas regiões visitadas', async () => {
           const visitedRegions = await saveRegions('Korinthia', 'Lakonia');
-          const character = await charactersRepository.save(
-            charactersRepository.create({
-              name: 'Kassandra',
-              nickname: 'The Eagle Bearer',
-              visitedRegions,
-            }),
-          );
+          const character = await charactersRepository.save({
+            name: 'Kassandra',
+            nickname: 'The Eagle Bearer',
+            visitedRegions,
+          });
 
           const { status, body } = await makeGetRequest(character.id);
 
@@ -230,12 +226,10 @@ describe('CRUD /characters', () => {
 
     describe('ao informar um id válido', () => {
       it('deve conseguir atualizar um personagem', async () => {
-        const character = await charactersRepository.save(
-          charactersRepository.create({
-            name: 'Kassandra',
-            nickname: 'The Eagle Bearer',
-          }),
-        );
+        const character = await charactersRepository.save({
+          name: 'Kassandra',
+          nickname: 'The Eagle Bearer',
+        });
 
         const { status, body } = await makePatchRequest(character.id, {
           name: 'Alexios',
@@ -254,13 +248,11 @@ describe('CRUD /characters', () => {
       describe('e informar as regiões visitadas de um personagem', () => {
         describe('caso as regiões não existam', () => {
           it('deve conseguir atualizar um personagem e criar as suas regiões visitadas', async () => {
-            const character = await charactersRepository.save(
-              charactersRepository.create({
-                name: 'Kassandra',
-                nickname: 'The Eagle Bearer',
-                visitedRegions: [],
-              }),
-            );
+            const character = await charactersRepository.save({
+              name: 'Kassandra',
+              nickname: 'The Eagle Bearer',
+              visitedRegions: [],
+            });
 
             expect(regionRepository.count()).resolves.toBe(0);
 
@@ -303,13 +295,11 @@ describe('CRUD /characters', () => {
               visitedRegions.length,
             );
 
-            const character = await charactersRepository.save(
-              charactersRepository.create({
-                name: 'Kassandra',
-                nickname: 'The Eagle Bearer',
-                visitedRegions: [],
-              }),
-            );
+            const character = await charactersRepository.save({
+              name: 'Kassandra',
+              nickname: 'The Eagle Bearer',
+              visitedRegions: [],
+            });
 
             const { status, body } = await makePatchRequest(character.id, {
               name: 'Alexios',
@@ -374,13 +364,11 @@ describe('CRUD /characters', () => {
 
     describe('ao informar um id válido', () => {
       it('deve conseguir remover um personagem', async () => {
-        const character = await charactersRepository.save(
-          charactersRepository.create({
-            name: 'Kassandra',
-            nickname: 'The Eagle Bearer',
-            visitedRegions: [],
-          }),
-        );
+        const character = await charactersRepository.save({
+          name: 'Kassandra',
+          nickname: 'The Eagle Bearer',
+          visitedRegions: [],
+        });
 
         const { status, body } = await makeDeleteRequest(character.id);
 
