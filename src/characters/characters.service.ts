@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
-import { Recruitment } from '../recruitment/entities/recruitment.entity';
+import { Repository } from 'typeorm';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
@@ -15,7 +14,6 @@ export class CharactersService {
     private readonly characterRepository: Repository<Character>,
     @InjectRepository(Region)
     private readonly regionRepository: Repository<Region>,
-    private readonly dataSource: DataSource,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -100,19 +98,5 @@ export class CharactersService {
     }
 
     return this.regionRepository.create({ name });
-  }
-
-  async recruit(captain: Character) {
-    await this.dataSource.transaction(async (manager) => {
-      captain.shipCrewHeadCount++;
-
-      const recruitment = new Recruitment();
-      recruitment.name = `Fulano #${captain.shipCrewHeadCount}`;
-      recruitment.type = 'Legendary';
-      recruitment.payload = { captainId: captain.id };
-
-      await manager.save(recruitment);
-      await manager.save(captain);
-    });
   }
 }

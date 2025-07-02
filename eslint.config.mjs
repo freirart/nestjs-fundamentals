@@ -39,6 +39,13 @@ export default tseslint.config(
           argsIgnorePattern: '^_',
         },
       ],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: ['src/*'],
+          message: 'Absolute imports are not allowed.',
+        },
+      ],
     },
   },
 );

@@ -1,16 +1,33 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+export enum RecruitType {
+  LEGENDARY = 'legendary',
+  RARE = 'rare',
+  EPIC = 'epic',
+  COMMON = 'common',
+}
+
+type RecruitmentPayload = {
+  captainId: number;
+  recruitId: number;
+};
+
 @Entity()
 export class Recruitment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column({ type: 'timestamptz', default: () => 'NOW()' })
+  recruitment_date: Date;
 
-  @Column()
-  type: string;
+  @Column({
+    type: 'enum',
+    enum: RecruitType,
+    default: RecruitType.COMMON,
+    comment: 'Type of recruitment, e.g., legendary, rare, epic, common',
+  })
+  type: RecruitType;
 
   @Column('json')
-  payload: Record<string, any>;
+  payload: RecruitmentPayload;
 }

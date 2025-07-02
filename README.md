@@ -1,5 +1,12 @@
 # NestJS Fundamentals
 
+<details>
+    <summary>Terminei o curso! 🥳</summary>
+    <img src="./assets/certificate-of-completion-for-nestjs-fundamentals.svg" alt="Certificado de conclusão do curso NestJS Fundamentals">
+</details>
+
+<br />
+
 NestJS é um Framework do ecossistema Node.js
 
 - Node.js oferece uma flexibilidade enorme para o desenvolvedor. Esta flexibilidade pode se tornar trabalhosa visto que o desenvolvedor deve definir manualmente tudo o que a aplicação deve ter.

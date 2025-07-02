@@ -1,0 +1,301 @@
+type: collection.insomnia.rest/5.0
+name: nestjs-fundamentals
+meta:
+  id: wrk_2387bca3d2474adfb10c1480d27ed8da
+  created: 1751469852679
+  modified: 1751469852679
+  description: ""
+collection:
+  - url: "{{ _.API_URL }}/health"
+    name: health
+    meta:
+      id: req_37484bb7ac68478ca980bf0c78efbcb8
+      created: 1751470233182
+      modified: 1751470684594
+      isPrivate: false
+      description: ""
+      sortKey: -1751470233182
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}"
+    name: timeout
+    meta:
+      id: req_9aea57f466ee4f5b8b2fe7a4fcb938d3
+      created: 1751470296296
+      modified: 1751470689539
+      isPrivate: false
+      description: ""
+      sortKey: -1719770280955.5
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/characters"
+    name: characters
+    meta:
+      id: req_fa5dd7f64efd4aa68ae4c75aba29bebe
+      created: 1751470334403
+      modified: 1751470623515
+      isPrivate: false
+      description: ""
+      sortKey: -1735620257068.75
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/characters/1"
+    name: characters/:id
+    meta:
+      id: req_8e47cb7cf33245789716ca6042f1504f
+      created: 1751470349816
+      modified: 1751470354811
+      isPrivate: false
+      description: ""
+      sortKey: -1727695269012.125
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/characters"
+    name: characters/?limit?offset
+    meta:
+      id: req_4a5e1d8b53dc48d38347bf0edc986cd8
+      created: 1751470373423
+      modified: 1751470726357
+      isPrivate: false
+      description: ""
+      sortKey: -1723732774983.8125
+    method: GET
+    parameters:
+      - id: pair_24ed3e172d264781a6ee176cf8df83c1
+        name: limit
+        value: "1"
+        description: ""
+        disabled: true
+      - id: pair_31b56ad3922b4180a4661d6feded3871
+        name: offset
+        value: "1"
+        description: ""
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/characters"
+    name: characters
+    meta:
+      id: req_e0d1e7164afd47889e826059a12dcd82
+      created: 1751470442584
+      modified: 1751470632107
+      isPrivate: false
+      description: ""
+      sortKey: -1731657763040.4375
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+            "name": "Kassandra of Sparta",
+            "nickname": "The Eagle Bearer",
+            "visitedRegions": []
+          }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/characters/3"
+    name: characters
+    meta:
+      id: req_0070f007583b40b9a942275448b8f15d
+      created: 1751470551109
+      modified: 1751470643433
+      isPrivate: false
+      description: ""
+      sortKey: -1725714021997.9688
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/characters/2"
+    name: characters
+    meta:
+      id: req_d5e92d148b7848dda935d90a1c94592c
+      created: 1751470573065
+      modified: 1751470662503
+      isPrivate: false
+      description: ""
+      sortKey: -1729676516026.2812
+    method: PATCH
+    body:
+      mimeType: application/json
+      text: |-
+        {
+            "name": "Alexios"
+          }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/recruitment"
+    name: recruitment
+    meta:
+      id: req_e6eaf109f6de4d88a9a18539b2e673d9
+      created: 1751470763832
+      modified: 1751471045985
+      isPrivate: false
+      description: ""
+      sortKey: -1751470763832
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/recruitment"
+    name: recruitment
+    meta:
+      id: req_427cf4594850442681d294ee79e2c681
+      created: 1751471034531
+      modified: 1751471034531
+      isPrivate: false
+      description: ""
+      sortKey: -1751470498507
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"captainId": 1,
+        	"recruitId": 2,
+        	"type": "legendary"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: bearer
+      token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_db21f9ed3a154a1d36be4f9539209f1fddfb928e
+    created: 1751469852696
+    modified: 1751469852696
+environments:
+  name: Local Environment
+  meta:
+    id: env_db21f9ed3a154a1d36be4f9539209f1fddfb928e
+    created: 1751469852694
+    modified: 1751469976056
+    isPrivate: false
+  data:
+    API_URL: http://localhost:3000
+    BEARER_TOKEN: fake_api_token
