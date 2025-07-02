@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CharactersService } from 'src/characters/characters.service';
 import { DataSource, Repository } from 'typeorm';
+import { CharactersService } from '../characters/characters.service';
 import { RecruitDto } from './dto/recruit.dto';
 import { Recruitment } from './entities/recruitment.entity';
 
@@ -24,7 +24,7 @@ export class RecruitmentService {
     const captain = await this.characterService.findOne(captainId);
     const recruit = await this.characterService.findOne(recruitId);
 
-    await this.dataSource.transaction(async (manager) => {
+    return await this.dataSource.transaction(async (manager) => {
       captain.shipCrewHeadCount++;
 
       const recruitment = this.recruitmentRepository.create({
@@ -37,6 +37,8 @@ export class RecruitmentService {
 
       await manager.save(recruitment);
       await manager.save(captain);
+
+      return recruitment;
     });
   }
 }
