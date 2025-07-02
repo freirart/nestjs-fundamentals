@@ -53,6 +53,10 @@ export class CharactersController {
   @ApiBadRequestResponse({
     description: 'Invalid character ID',
   })
+  @ApiOkResponse({
+    description: 'Character updated successfully',
+    type: Character,
+  })
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
