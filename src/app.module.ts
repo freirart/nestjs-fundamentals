@@ -8,6 +8,7 @@ import { CommonModule } from './common/common.module';
 import databaseConfig, { validationSchema } from './database/database.config';
 import { DatabaseModule } from './database/database.module';
 import { DatabaseService } from './database/database.service';
+import { RecruitmentModule } from './recruitment/recruitment.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { DatabaseService } from './database/database.service';
       useClass: DatabaseService,
       imports: [ConfigModule.forFeature(databaseConfig)],
     }),
+    RecruitmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

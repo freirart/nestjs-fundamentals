@@ -10,5 +10,6 @@ import { Region } from './entities/region.entity';
   imports: [TypeOrmModule.forFeature([Character, Region, Recruitment])],
   controllers: [CharactersController],
   providers: [CharactersService],
+  exports: [CharactersService],
 })
 export class CharactersModule {}
