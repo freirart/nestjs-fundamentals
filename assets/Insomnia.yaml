@@ -3,7 +3,7 @@ name: nestjs-fundamentals
 meta:
   id: wrk_2387bca3d2474adfb10c1480d27ed8da
   created: 1751469852679
-  modified: 1751469852679
+  modified: 1751476011259
   description: ""
 collection:
   - url: "{{ _.API_URL }}/health"
@@ -275,6 +275,27 @@ collection:
     authentication:
       type: bearer
       token: "{{ _.BEARER_TOKEN }}"
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.API_URL }}/api"
+    name: swagger
+    meta:
+      id: req_95bebdd5226545d4b8436ce76cba6dd5
+      created: 1751475959024
+      modified: 1751475977504
+      isPrivate: false
+      description: ""
+      sortKey: -1751475959024
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
     settings:
       renderRequestBody: true
       encodeUrl: true
