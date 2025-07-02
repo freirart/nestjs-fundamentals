@@ -11,7 +11,7 @@ import { type Observable } from 'rxjs';
 import guardsConfig from '../guards.config';
 
 @Injectable()
-export class ApiKeyGuard implements CanActivate {
+export class BearerTokenGuard implements CanActivate {
   constructor(
     @Inject(guardsConfig.KEY)
     private configService: ConfigType<typeof guardsConfig>,
@@ -32,7 +32,7 @@ export class ApiKeyGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<Request>();
     const authHeader = request.header('Authorization');
-    const desiredHeader = `Bearer ${this.configService.apiKey}`;
+    const desiredHeader = `Bearer ${this.configService.apiBearerToken}`;
 
     return authHeader === desiredHeader;
   }

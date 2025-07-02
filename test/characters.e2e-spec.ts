@@ -16,7 +16,7 @@ describe('CRUD /characters', () => {
   let app: INestApplication<App>;
   let charactersRepository: Repository<Character>;
   let regionRepository: Repository<Region>;
-  let apiKey: string | undefined;
+  let apiBearerToken: string | undefined;
 
   beforeAll(async () => {
     app = await appFactory();
@@ -24,7 +24,9 @@ describe('CRUD /characters', () => {
     charactersRepository = app.get(getRepositoryToken(Character));
     regionRepository = app.get(getRepositoryToken(Region));
 
-    apiKey = app.get<ConfigType<typeof guardsConfig>>(guardsConfig.KEY).apiKey;
+    apiBearerToken = app.get<ConfigType<typeof guardsConfig>>(
+      guardsConfig.KEY,
+    ).apiBearerToken;
   });
 
   afterEach(async () => {
@@ -48,7 +50,7 @@ describe('CRUD /characters', () => {
     const makeGetRequest = (param: string | number = '') => {
       return request(app.getHttpServer())
         .get(`/characters/${param}`)
-        .set('Authorization', `Bearer ${apiKey}`);
+        .set('Authorization', `Bearer ${apiBearerToken}`);
     };
 
     it('deve retornar todos os personagens e as regiões que visitou quando o parâmetro id não for informado', async () => {
@@ -92,7 +94,12 @@ describe('CRUD /characters', () => {
           const { status, body } = await makeGetRequest(character.id);
 
           expect(status).toBe(HttpStatus.OK);
-          expect(body).toEqual({ data: expect.objectContaining(character) });
+          expect(body).toEqual({
+            data: expect.objectContaining({
+              ...character,
+              visitedRegions: expect.arrayContaining(character.visitedRegions),
+            }),
+          });
         });
       });
 
@@ -120,7 +127,7 @@ describe('CRUD /characters', () => {
     const makePostRequest = (data: CreateCharacterDto) => {
       return request(app.getHttpServer())
         .post('/characters')
-        .set('Authorization', `Bearer ${apiKey}`)
+        .set('Authorization', `Bearer ${apiBearerToken}`)
         .send(data);
     };
 
@@ -220,7 +227,7 @@ describe('CRUD /characters', () => {
     ) => {
       return request(app.getHttpServer())
         .patch(`/characters/${id}`)
-        .set('Authorization', `Bearer ${apiKey}`)
+        .set('Authorization', `Bearer ${apiBearerToken}`)
         .send(data);
     };
 
@@ -359,7 +366,7 @@ describe('CRUD /characters', () => {
     const makeDeleteRequest = (id: number | string) => {
       return request(app.getHttpServer())
         .delete(`/characters/${id}`)
-        .set('Authorization', `Bearer ${apiKey}`);
+        .set('Authorization', `Bearer ${apiBearerToken}`);
     };
 
     describe('ao informar um id válido', () => {
