@@ -17,6 +17,7 @@ async function bootstrap() {
   );
 
   const options = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle("Assassin's Creed Odyssey API")
     .setDescription(
       "REST API with NestJS based on the game Assassin's Creed Odyssey",

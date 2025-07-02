@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ApiRequestTimeoutResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { Protocol } from './common/decorators/protocol.decorator';
 import { Public } from './common/decorators/public.decorator';
@@ -11,6 +12,9 @@ export class AppController {
     private readonly configService: ConfigService,
   ) {}
 
+  @ApiRequestTimeoutResponse({
+    description: 'This endpoint throws a timeout error by default.',
+  })
   @Public()
   @Get()
   async getHello(): Promise<string> {
