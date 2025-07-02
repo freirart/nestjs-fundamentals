@@ -1,11 +1,11 @@
 # NestJS Fundamentals
 
-<details>
-    <summary>Terminei o curso! 🥳</summary>
-    <img src="./assets/certificate-of-completion-for-nestjs-fundamentals.svg" alt="Certificado de conclusão do curso NestJS Fundamentals">
-</details>
+> P.S. Terminei o curso! 🥳
 
-<br />
+<img
+  src="./assets/certificate-of-completion-for-nestjs-fundamentals.svg"
+  alt="Certificado de conclusão do curso NestJS Fundamentals"
+/>
 
 NestJS é um Framework do ecossistema Node.js
 
